@@ -22,8 +22,6 @@ final manuscript.
 
 ## Learning objectives
 
-\[ADD LEARNING OBJECTIVES\]
-
 1. Learn how to take a mock clinical trial dataset and use RMarkdown to create a reproducible manuscript incorporating tables and figures generated in R.
 
 2. Learn how to easily create a Table 1 and incorporate it into your manuscript.
