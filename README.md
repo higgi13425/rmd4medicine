@@ -6,7 +6,7 @@ R Markdown for Medicine: <br>From Data to Manuscript
 -----
 
 🗓 September 12, 2019  
-🕗 08:00am - 12:00pm  
+🕗 01:00pm - 05:00pm  
 📍 Boston, MA  
 ✅ [Register](https://cvent.me/en41V)
 
@@ -52,15 +52,14 @@ This introductory workshop is targeted at people who work in the medical field w
 
 | Time          | Activity                                 |
 | :------------ | :--------------------------------------- |
-| 08:00 - 08:50 | Session 1 (`rmarkdown` + `knitr` basics) |
-| 08:50 - 09:00 | 🧘
-♂️ *Break*                             |
-| 09:00 - 09:45 | Session 2 (graphics)                     |
-| 09:45 - 10:00 | 🚴 *Break*                                |
-| 10:00 - 10:50 | Session 3 (data + workflows)             |
-| 10:50 - 11:00 | 🏄 *Break*                                |
-| 11:00 - 11:45 | Session 4 (tables)                       |
-| 11:45 - 12:00 | Wrap-up / Overtime                       |
+| 01:00 - 01:50 | Session 1 (`rmarkdown` + `knitr` basics) |
+| 01:50 - 02:00 | *Break*                                  |
+| 02:00 - 02:45 | Session 2 (tables)                       |
+| 02:45 - 03:00 | *Break*                                  |
+| 03:00 - 03:50 | Session 3 (data + workflows)             |
+| 03:50 - 04:00 | *Break*                                  |
+| 04:00 - 04:45 | Session 4 (graphics)                     |
+| 04:45 - 05:00 | Wrap-up / Overtime                       |
 
 ## Instructor
 
@@ -78,35 +77,47 @@ journals](https://alison.rbind.io/publication/#2).
 
 ## Pre-work
 
-- Please sign up for a free RStudio Cloud account at
-<https://rstudio.cloud/>. On the day of the workshop, I’ll provide you
-with an RStudio Cloud project that contains all of the course materials.
+Welcome to the [R Markdown for
+Medicine](https://rmd4medicine.netlify.com/workshop/) workshop\! We look
+forward to meeting you in person. Before attending the workshop, please
+complete the following prework:
 
-Please bring a laptop that has the following installed:
+<br> <br>
 
-  - A recent version of R (\>=3.6.0), which is available for free at
-    <https://cloud.r-project.org/>
+1.  Sign up for a free RStudio Cloud account at <https://rstudio.cloud/>
+    before the workshop. I recommend logging in with an existing Google
+    or GitHub account, if you have one (rather than creating a new
+    account with another password you have to remember).
 
-  - A recent version of RStudio Desktop (\>=1.2), available for free
-    ([RStudio Desktop Open Source
-    License](https://www.rstudio.com/products/rstudio/download/#download))
+2.  Complete this [10-minute interactive tutorial on
+    Markdown](https://commonmark.org/help/tutorial/).
 
-  - The R packages we will use, which you can install by connecting to
-    the internet, opening RStudio, and running at the command line:
+3.  Please bring a laptop that has the following installed:
+    
+      - A recent version of R (\>=3.6.0), which is available for free at
+        <https://cloud.r-project.org/>
+      - A recent version of RStudio Desktop (\>=1.2), available for free
+        ([RStudio Desktop Open Source
+        License](https://www.rstudio.com/products/rstudio/download/#download))
+      - The R packages we will use, which you can install by connecting
+        to the internet, opening RStudio, and running at the command
+        line:
+    
+    <!-- end list -->
     
     ``` r
-    install.packages(c("rmarkdown", "tidyverse", "janitor", "here", 
-                       "skimr", "flextable", "kable", "kableExtra"))
+    install.packages(c("rmarkdown", "distill", "bookdown",
+                       "tidyverse", "here", "janitor", "skimr", 
+                       "flextable", "arsenal", "scico", "cowplot"))
     ```
 
-And don’t forget your power cord\!
+4.  Don’t forget your power cord\!
 
-Remember to please sign up for a free RStudio Cloud account at
-<https://rstudio.cloud/>. On the day of the workshop, I’ll provide you
-with an RStudio Cloud project that contains all of the course materials.
-We will use the software listed above only as an important backup should
-there be problems with the on-site internet
-connection.
+
+On the day of the workshop, I’ll provide you with an RStudio Cloud
+project that contains all of the course materials. We will use the
+software listed above only as an important backup should there be
+problems with the on-site internet connection.
 
 -----
 
