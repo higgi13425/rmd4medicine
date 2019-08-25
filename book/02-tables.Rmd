@@ -1,9 +1,182 @@
 # (PART\*) Tables {-}
+  A common way to record data summaries in the medical literature is with tables. Two of the most common tables for clinical trial manuscripts are "Table 1", which is traditionally a description of the characteristics of the study population, and a table of adverse events, which is usually Table 2. <br>
+  We will walk through how to create Table 1 using the *tableby* function from the **arsenal** package, and then a table of Adverse Events using the *tabyl* function from the **janitor** package and then the **flextable** package to format this table. <br>
+  Let's get started by taking a quick look at our study data using the *head* function and the *glimpse* function. Run the code chunk below to read in our mockstudy data and then add two lines of code:
+  1. head(study) to show the first 6 observations
+  2. glimpse(study) to look at the structure of the dataset
+  You can also use View(study) to view the whole dataset in the top left pane.
 
+```{r}
+library(readr)
+library(here)
+library(tidyverse)
+study <- read_csv(here("data/mockstudy2.csv")) %>% select(-X1)
+study %<>% 
+  mutate(low_wbc= factor(low_wbc)) %>%
+  mutate(neuropathy= factor(neuropathy)) %>%
+  mutate(diarrhea= factor(diarrhea)) %>%
+  mutate(vomiting= factor(vomiting)) %>%
+  mutate(blood_clot= factor(blood_clot))
+
+```
+
+  
+ 
 # Table one
 
 # Markdown tables
 
 # kable tables
 
-# flextable
+# Table 2: Adverse Events with janitor::tabyl and flextable
+  In our mock study data, we have five adverse events reported, which are listed as the last 5 variables in the dataset, from low_wbc to blood_clot.
+  
+  First we will load the janitor and arsenal libraries, then use some piping to select the adverse events columns.
+   Run the chunk below. All of the adverse events data are coded as 0 (did not happen) or 1 (did occur in this patient).
+ 
+```{r}
+library(janitor)
+library(arsenal)
+study %>% 
+  select(case, arm, low_wbc:blood_clot)
+```
+
+In the next chunk we will use janitor::tabyl to count the cases and percentages for leukopenia.
+ We will use the functions to "adorn" basic tables with percentages, and percent formatting, and Ns, then save this as an object named low_wbc_tab.
+ 
+ Fiddle with the arguments to adorn_percentages 
+ and adorn_pct_formatting.
+ use help() to learn the arguments. Experiment with affix_sign and rounding
+  Try commenting out different lines with a hashtag #.
+ Figure out what each step of the pipe does.
+
+ 
+```{r}
+study %>% 
+  select(case, arm, low_wbc:blood_clot)%>% 
+  tabyl(low_wbc, arm) %>% 
+  adorn_percentages("col") %>% 
+  adorn_pct_formatting(digits = 1) %>% 
+  adorn_ns() ->
+low_wbc_tab
+```
+
+Once you are happy with your small table, repeat the formatting for the other 4 adverse events (edit the code below), and run this code chunk.
+```{r}
+study %>% 
+  select(case, arm, low_wbc:blood_clot) %>% 
+  tabyl(neuropathy, arm) %>% 
+  adorn_percentages("col") %>% 
+  adorn_pct_formatting(digits = 1) %>% 
+  adorn_ns() ->
+neuropathy_tab
+
+study %>% 
+  select(case, arm, low_wbc:blood_clot) %>% 
+  tabyl(diarrhea, arm) %>% 
+  adorn_percentages("col") %>% 
+  adorn_pct_formatting(digits = 1) %>% 
+  adorn_ns() ->
+diarrhea_tab
+
+study %>% 
+  select(case, arm, low_wbc:blood_clot) %>% 
+  tabyl(vomiting, arm) %>% 
+  adorn_percentages("col") %>% 
+  adorn_pct_formatting(digits = 1) %>% 
+  adorn_ns() ->
+vomiting_tab
+
+study %>% 
+  select(case, arm, low_wbc:blood_clot) %>% 
+  tabyl(blood_clot, arm) %>% 
+  adorn_percentages("col") %>% 
+  adorn_pct_formatting(digits = 1) %>% 
+  adorn_ns() ->
+blood_clot_tab
+```
+
+This is great, but now you have 5 distinct tables, and you would like to put them into one table. 
+So bind them together with bind_rows in the chunk below
+```{r}
+bind_rows(low_wbc_tab, neuropathy_tab, diarrhea_tab, vomiting_tab, blood_clot_tab) %>% 
+  select(`A: IFL`, `F: FOLFOX`, `G: IROX`, low_wbc, neuropathy, diarrhea,
+         vomiting, blood_clot) ->
+ae_table1 
+ae_table1
+```
+This is OK, but your labels for each row are in distinct columns.
+And you only want the rows where the event value = 1 (occurred).
+This is a good time to use gather to make your table taller,
+filter to select event = 1,
+and select to re-order your variables.
+See if you can figure out what each line in the pipe below does.
+
+```{r}
+ae_table1%>% 
+  gather(key = "adv_event", value = "present", low_wbc:blood_clot) %>% 
+  filter(present == "1") %>% 
+  select(adv_event, `A: IFL`:`G: IROX`) ->
+ae_table2
+ae_table2
+```
+
+That looks much better.
+But some of the names could be improved,
+particular the headers and the names of adverse events in column 1.
+
+Change the adv_event values for the 5 rows to
+c("Leukopenia", "Neuropathy", "Diarrhea", "Vomiting", 
+                         "Venous Thromboembolism")
+and the names of the 4 columns to 
+c("Adverse Event", "IFL", "FOLFOX", "IROX")
+
+by editing the chunk below and running it.
+
+```{r}
+ae_table2$adv_event <- c("Leukopenia", "Neuropathy", "Diarrhea", "Vomiting", 
+                         "Venous Thromboembolism")
+names(ae_table2) <- c("Adverse Event", "IFL", "FOLFOX", "IROX")
+ae_table2
+```
+
+This is fine, but you could use some nice custom formatting.
+
+Let's use the flextable package and neaten this up.
+Run the code chunk below to make a basic flextable.
+
+```{r}
+library(flextable)
+library(officer)
+ae_table2 %>% 
+  flextable() 
+  
+```
+
+Now check out the formatting options at the [flextable website]
+(https://cran.r-project.org/web/packages/flextable/vignettes/overview.html)
+
+Now, add the following formatting:
+
+1. Add a header row that spans columns 2-4, and says "Study Arm"
+2. Autofit the column widths
+3. Fix the alignments of chemo regimens and rates
+4. Set arms to bold
+5. Control font and font sizes
+6. Use conditional formatting to make any AE > 20% in red font and italic
+
+Be creative!
+
+
+
+Below is another approach to another adverse event table, albeit with less formatting control, using tableby.
+Really quick and easy.
+```{r}
+# low effort tableby version
+tableby(arm ~ low_wbc + neuropathy + diarrhea + vomiting + blood_clot, data = study) ->
+table2
+summary(table2)
+
+```
+ 
+ 

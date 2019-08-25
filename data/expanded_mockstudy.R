@@ -25,6 +25,11 @@ mockstudy$gender_num <- factor(case_when(
   mockstudy$sex =="Female" ~ 1
 ))
 
+mockstudy$alive <- factor(case_when(
+  mockstudy$fu.stat == 2 ~ 0,
+  mockstudy$fu.stat == 1 ~ 1
+))
+
 mockstudy$firstname <- 
   randomNames(ethnicity=mockstudy$race_num, 
               gender = mockstudy$gender_num,
@@ -39,23 +44,26 @@ mockstudy$lastname <-
 
 mockstudy %>% 
   mutate(ae_random = runif(n=nrow(.), min=0, max=1)) %>% 
-  mutate(ae_random = ifelse(arm=="IROX", 
-                ae_random+0.14, ae_random)) %>% 
-  mutate(ae_random = ifelse(arm=="IFL", 
+  mutate(ae_random = ifelse(arm=="G: IROX", 
+                ae_random+0.12, ae_random)) %>% 
+  mutate(ae_random = ifelse(arm=="A: IFL", 
                 ae_random+ 0.07, ae_random)) %>% 
-  mutate(low_wbc = ifelse(ae_random<0.23, 1, 0)) %>% 
-  mutate(neuropathy = ifelse(ae_random >0.05 & ae_random<0.23, 1, 0)) %>% 
-  mutate(diarrhea = ifelse(ae_random >0.02 & ae_random<0.26, 1, 0)) %>%
-  mutate(vomiting = ifelse(ae_random >0.06 & ae_random<0.26, 1, 0)) %>%
-  mutate(blood_clot = ifelse(ae_random >0.13 & ae_random<0.18, 1, 0)) %>% 
+  mutate(low_wbc = ifelse(ae_random>0.9, 1, 0)) %>% 
+  mutate(neuropathy = ifelse(ae_random >0.97, 1, 0)) %>% 
+  mutate(diarrhea = ifelse(ae_random >0.95, 1, 0)) %>%
+  mutate(vomiting = ifelse(ae_random >0.88, 1, 0)) %>%
+  mutate(blood_clot = ifelse(ae_random >0.99, 1, 0)) %>% 
   rename(mdquality = mdquality.s) %>% 
-  select(case, firstname, lastname, age, age.ord, sex, race, bmi, 
-         fu.time,fu.stat, low_wbc:blood_clot) ->
+  select(case, firstname, lastname, age, age.ord, sex, race, bmi, hgb, alk.phos, 
+         ast, arm, mdquality, fu.time, alive, low_wbc:blood_clot) ->
 mockstudy
 
-write.csv(mockstudy, here("mockstudy2.csv"))
+write.csv(mockstudy, here("data/mockstudy2.csv"))
 
-
+# next - eliminate G:, F:, I: at beginning of names
+# next - diff random for each of 5 AEs
+# next - differential different between arms for each of 5 AEs
+#
 
 #next - add random adverse events for FOLFOX, IROX, IFL
 # FOLFOX more than 10%
